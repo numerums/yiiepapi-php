@@ -1,18 +1,52 @@
 # yiiepapi-php
 Yiiep payment plateform API for PHP
 
-Yiiep est une plateforme de payement en ligne basée sur le mobile money. Cet API vous permet d'intégrer Yiiep dans votre site web comme solution de payement. L'api génére un qrcode que votre client peut scanner avec [l'appication mobile Yiiep](https://play.google.com/store/apps/details?id=com.numerumservices.yiiep) pour initier le payement.
+Yiiep est une plateforme de payement en ligne basée sur le mobile money. Cet API vous permet d'intégrer Yiiep  comme solution de payement dans votre site web php. L'API génère un qrcode que votre client peut scanner avec [l'appication mobile Yiiep](https://play.google.com/store/apps/details?id=com.numerumservices.yiiep) pour initier le payement.
 
 Visitez [www.yiiep.com](https://www.yiiep.com/) pour en savoir plus.
 
 ## Installation
-Cloner / Télécharger et déconpresser le répertoire yiiepapi-php dans votre projet.
+1. Cloner / Télécharger et déconpresser le répertoire yiiepapi-php dans votre projet.
+2. Installez les dépendances ( [Request for PHP](http://requests.ryanmccue.info/) ).
+
+```bash
+
+composer install
+
+```
+
+## Fonctions principales
+
+### presetBill($billId, $billAmount, $billCurrency)
+Setup bill on Yiiep plateform
+
+
+### function unsetBill($billHash)
+Cancel Bill on Yiiep
+
+
+### checkBill($billHash)
+Get bill state
+
+
+### payLink($billhash, $class = '')
+Build Yiiep pay link for a bill - Use to redirect user to Yiiep web site
+
+
+### function payQR($billhash, $class = '')
+Build Yiiep pay qr code image tag for a bill - Use to display qrcode on your website
+
+
+### transfer($amount, $currency, $receiver)
+Transfert money from an Yiiep account to an Yiiep account
+
 
 ## Obtenir un ID d'api pour votre site ou application
 1. [Créer un compte](https://www.yiiep.com/login)
 2. Enregistrez un site marchand
+3. Récupérer et configurer l'ID et la clé d'API dans le fichier config
 
-## Utilisation
+## Exemple Utilisation
 Ci dessous un exemple d'utilisation de l'API. Une version fonctionnelle de cet exemple est disponible dans le dossier  [example](../../example).  Pour plus d'information veuillez consulter la documentation.
 
 ```php
