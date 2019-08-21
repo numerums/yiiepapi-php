@@ -152,7 +152,7 @@ class ApiClient {
      */
     public function isSuccess($response){
         $this->_lastReply = $response;
-        return (isset($this->_lastReply[success]) && $this->_lastReply[success] === TRUE);
+        return (isset($this->_lastReply['success']) && $this->_lastReply['success'] === TRUE);
     }
     
     /**
