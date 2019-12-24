@@ -1,5 +1,8 @@
 <?php
-require '../YiiepApi.php';
+//require '../yiiep/YiiepApi.php';
+require_once '../vendor/autoload.php';
+require_once 'config.php'; //Edit config file to setup id and key
+
 $payLink = '#';
 $failMessage = '';
 
@@ -27,7 +30,7 @@ if (!empty($_POST)){
 
 // 3 - Créer l'objet YiiepApi
 $testMode = true; //Mettre a false pour passer en production
-$YiiepApi = new \Yiiep\YiiepApi($testMode);
+$YiiepApi = new \Yiiep\YiiepApi(NODEID, NODEKEY, $testMode);
 $apiId = $YiiepApi->getId();
 
 // 4 - Initier le payement
