@@ -30,8 +30,8 @@ class ApiClient {
      */
     public function __construct($apiId = '', $apiKey = '', $testmode = false) {
         $this->_testmode = $testmode;
-        echo $this->_publicKey = $apiId;
-        echo $this->_privateKey = $apiKey;
+        $this->_publicKey = $apiId;
+        $this->_privateKey = $apiKey;
 		if($this->_testmode === false){
             $this->_host = 'yiiep.com';
         }
@@ -75,8 +75,8 @@ class ApiClient {
         //Random Seed
         $params['rseed'] = $this->random_str();
 
-        $jwt = new JWT($this->_privateKey, 'HS256', 3600, 10);
-        $payload = array('apicall' => $params, 'sub' => $ressource, 'iss' =>'Yiiep WebAPI');
+        $jwt = new JWT($this->_privateKey, 'HS256', 180);
+        $payload = array('apicall' => $params, 'sub' => $ressource, 'iss' =>'Yiiep WebAPI', 'iat' => time());
         $token = $jwt->encode($payload);
         return $token;
     }
@@ -87,25 +87,30 @@ class ApiClient {
      * @param Request Response Object $response
      * @return array
      */
-    public function parseResponse($response) {
-        
+    public function parseResponse($httpResponse) {
+        //Http Status
+        if ($httpResponse->success) {
+            $apiResponse = json_decode($httpResponse->body, true);
 
-        if ($response->success) {
-            $received = json_decode($response->body, true);
-            if(isset($received['sdata'])){
-                $jwt = new JWT($this->_privateKey, 'HS256', 3600, 10);
-                $payload = $jwt->decode($received['sdata']);
+            //JWT encoded
+            if(isset($apiResponse['sdata'])){
+                $jwt = new JWT($this->_privateKey, 'HS256', 180);
+                $payload = $jwt->decode($apiResponse['sdata']);
 
+                //Chech JWT decode is OK
                 if(!is_array($payload) || !isset($payload['yiiepdata'])){
                     return array('success' => false, 'message' => 'Invalid Response', 'status' => '500');
                 }
-        
-                return $payload['yiiepdata'];
-            }else{
-                return $received;
+
+                $apiResponse = json_decode(json_encode($payload['yiiepdata']), true);
+
+                //var_dump($apiResponse);
             }
+
+            return $apiResponse;
+
         } else {
-            return array('success' => false, 'message' => 'Request Fail', 'status' => $response->status_code);
+            return array('success' => false, 'message' => 'Request Failed', 'status' => $httpResponse->status_code);
         }
     }
     
@@ -162,8 +167,8 @@ class ApiClient {
         $url = "{$this->_baseUrl}{$ressource}";
         //Request
         $response = \Requests::post($url, array('Accept' => 'application/json'), array('identity'=> $this->_publicKey,'data'=> $signed));
-        var_dump($response);
-        return $this->parseResponse($response->body);
+        //var_dump($response);
+        return $this->parseResponse($response);
     }
     /**
      * 

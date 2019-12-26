@@ -35,8 +35,7 @@ $apiId = $YiiepApi->getId();
 
 // 4 - Initier le payement
 if($YiiepApi->presetBill($billId, $billValue, $billCurrency)){
-	
-	// 5 - Récupérer les infos de payement
+	// 5 - Récupérer les infos de paiement
 	$payInfo = $YiiepApi->data();
 	
 	// 6 - Récupérer l'ID de payement Yiiep de votre facture
@@ -46,7 +45,7 @@ if($YiiepApi->presetBill($billId, $billValue, $billCurrency)){
 	$payLink = $YiiepApi->payLink($billHash, 'btn btn-lg btn-primary');
 	
 	// 7 - Créer le QR code de payement
-  $payQR = $YiiepApi->payQR($billHash, 'img-thumbnail');
+    $payQR = $YiiepApi->payQR($billHash, 'img-thumbnail');
   
   // 8 - Vérifier l'état d'une facture
   $billStateError = '';
@@ -170,7 +169,7 @@ if($YiiepApi->presetBill($billId, $billValue, $billCurrency)){
                     </ul>
                 </div>
 
-                <?php }else{ ?>
+            <?php }else{ ?>
 
                     <div class="alert alert-success">
                         <b>Succès !</b>
@@ -187,14 +186,14 @@ if($YiiepApi->presetBill($billId, $billValue, $billCurrency)){
                         <p>
                             <?php if($billStateError == '' ){ ?>
                                 <?php echo print_r($billState); ?>
-                                    <?php }else{ ?>
-                                        <?php echo $billStateError; ?>
-                                            <?php } ?>
+                            <?php }else{ ?>
+                                <?php echo $billStateError; ?>
+                            <?php } ?>
                         </p>
 
                     </div>
 
-                    <?php } ?>
+                <?php } ?>
 
         </div>
         <!-- /container -->

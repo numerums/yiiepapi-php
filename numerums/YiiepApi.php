@@ -109,16 +109,28 @@ class YiiepApi extends ApiClient{
     }
     
     /**
-     * 
-     * Build Yiiep pay link for a bill
-     * 
-     * @param string $billhash
-     * @param string $class ; css class 
-     * @return string
-     */
-    public function payLink($billhash, $class = ''){
-        return '<a class="' . $class . '" target="_blank" href="' . $this->_baseUrl . "pay/{$billhash}" . '">YiiepPay</a>';
-    }
+    * 
+    * Build Yiiep pay url for a bill
+    * 
+    * @param string $billhash
+    * @param string $class ; css class 
+    * @return string
+    */
+   public function payUrl($billhash){
+       return $this->_baseUrl . "pay/{$billhash}";
+   }
+   
+   /**
+    * 
+    * Build Yiiep pay link tag for a bill
+    * 
+    * @param string $billhash
+    * @param string $class ; css class 
+    * @return string
+    */
+   public function payLink($billhash, $class = ''){
+       return '<a class="' . $class . '" target="_blank" href="' . $this->payUrl($billhash) . '">YiiepPay</a>';
+   }
     
     /**
      * 
